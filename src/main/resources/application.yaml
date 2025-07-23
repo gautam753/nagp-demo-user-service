@@ -1,0 +1,40 @@
+server:
+  max-http-request-header-size: 2MB
+  servlet:
+    context-path: /v1/user-service
+  port: 8080
+
+spring:
+  application:
+    name: nagp-demo-user-service
+  #profiles:
+  #  active: dev # can be overridden by env var SPRING_PROFILES_ACTIVE
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.postgresql.Driver
+    url: ${${spring.profiles.active}.datasource.url}
+    username: ${${spring.profiles.active}.datasource.username}
+    password: ${${spring.profiles.active}.datasource.password}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      pool-name: testDBPool
+
+  jpa:
+    #hibernate:
+    #  ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: testdb
+        format_sql: true
+      default_schema: testdb
+      hibernate.order_by.default_null_ordering: last
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+x-api-key:
+  value: ${${spring.profiles.active}.api.key}
