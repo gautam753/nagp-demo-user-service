@@ -1,7 +1,5 @@
 package com.demo.nagp.userservice.controller;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.nagp.userservice.entity.User;
+import com.demo.nagp.userservice.model.CommonResponseModel;
 import com.demo.nagp.userservice.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,24 +22,27 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService service;
+	String podName = System.getenv("HOSTNAME");
 
 	@GetMapping
-	public List<User> getAllUsers() {
+	public CommonResponseModel getAllUsers() {
 		return service.getAllUsers();
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<User> getUserById(@PathVariable Long id) {
-		return service.getUserById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+	public ResponseEntity<CommonResponseModel> getUserById(@PathVariable Long id) {
+		return service.getUserById(id)
+				.map(user -> ResponseEntity.ok(CommonResponseModel.builder().podName(podName).userDetail(user).build()))
+				.orElse(ResponseEntity.notFound().build());
 	}
 
 	@PostMapping
-	public User createUser(@RequestBody User user) {
+	public CommonResponseModel createUser(@RequestBody User user) {
 		return service.createUser(user);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+	public ResponseEntity<CommonResponseModel> updateUser(@PathVariable Long id, @RequestBody User user) {
 		return ResponseEntity.ok(service.updateUser(id, user));
 	}
 

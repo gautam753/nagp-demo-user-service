@@ -2,7 +2,7 @@ server:
   max-http-request-header-size: 2MB
   servlet:
     context-path: /v1/user-service
-  port: 8080
+  port: 8091
 
 spring:
   application:
@@ -12,9 +12,9 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
-    url: ${${spring.profiles.active}.datasource.url}
-    username: ${${spring.profiles.active}.datasource.username}
-    password: ${${spring.profiles.active}.datasource.password}
+    url: ${DATASOURCE_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
@@ -27,14 +27,19 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        default_schema: testdb
+        default_schema: ${DB_SCHEMA}
         format_sql: true
-      default_schema: testdb
+      default_schema: ${DB_SCHEMA}
       hibernate.order_by.default_null_ordering: last
+  flyway:
+    baseline-on-migrate: true
+    schemas[]: ${DB_SCHEMA}
+    default-schema: ${DB_SCHEMA}
+    enabled: true
 
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
 
 x-api-key:
-  value: ${${spring.profiles.active}.api.key}
+  value: ${X_API_KEY}
