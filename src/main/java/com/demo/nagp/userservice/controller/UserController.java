@@ -29,16 +29,16 @@ public class UserController {
 		return service.getAllUsers();
 	}
 
-	@GetMapping("/{id}")
+	@PostMapping
+	public CommonResponseModel createUser(@RequestBody User user) {
+		return service.createUser(user);
+	}
+	
+	/*@GetMapping("/{id}")
 	public ResponseEntity<CommonResponseModel> getUserById(@PathVariable Long id) {
 		return service.getUserById(id)
 				.map(user -> ResponseEntity.ok(CommonResponseModel.builder().podName(podName).userDetail(user).build()))
 				.orElse(ResponseEntity.notFound().build());
-	}
-
-	@PostMapping
-	public CommonResponseModel createUser(@RequestBody User user) {
-		return service.createUser(user);
 	}
 
 	@PutMapping("/{id}")
@@ -50,5 +50,5 @@ public class UserController {
 	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 		service.deleteUser(id);
 		return ResponseEntity.noContent().build();
-	}
+	}*/
 }
