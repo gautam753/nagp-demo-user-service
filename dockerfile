@@ -3,5 +3,5 @@ WORKDIR /app
 ARG JAR_FILE=target/userservice-1.0.0.jar
 COPY ${JAR_FILE} user-service.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/user-service.jar"]
+ENTRYPOINT ["java","-jar","user-service.jar"]
 
