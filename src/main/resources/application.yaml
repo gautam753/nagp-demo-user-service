@@ -36,6 +36,17 @@ spring:
     schemas[]: ${DB_SCHEMA}
     default-schema: ${DB_SCHEMA}
     enabled: true
+    
+management:
+  server:
+    base-path: /actuator
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
 
 springdoc:
   swagger-ui:

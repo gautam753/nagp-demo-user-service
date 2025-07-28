@@ -23,8 +23,11 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
 		String requestKey = request.getHeader("X-API-KEY");
 		String requestpath = request.getRequestURI();
-		if (!(requestpath.contains("swagger-ui") || requestpath.contains("swagger-config") || requestpath.contains("api-docs")) 
-				&& (requestKey == null || !requestKey.equals(apiKey))) {
+		if (!(requestpath.contains("swagger-ui") 
+				|| requestpath.contains("swagger-config") 
+				|| requestpath.contains("api-docs")
+				|| requestpath.contains("/actuator/health")
+			) && (requestKey == null || !requestKey.equals(apiKey))) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.getWriter().write("Invalid API Key");
 			return;
