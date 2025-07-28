@@ -34,7 +34,7 @@ public class UserController {
 		return service.createUser(user);
 	}
 	
-	/*@GetMapping("/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<CommonResponseModel> getUserById(@PathVariable Long id) {
 		return service.getUserById(id)
 				.map(user -> ResponseEntity.ok(CommonResponseModel.builder().podName(podName).userDetail(user).build()))
@@ -50,5 +50,5 @@ public class UserController {
 	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 		service.deleteUser(id);
 		return ResponseEntity.noContent().build();
-	}*/
+	}
 }
