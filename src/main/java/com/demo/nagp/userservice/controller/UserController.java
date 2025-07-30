@@ -1,5 +1,8 @@
 package com.demo.nagp.userservice.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.nagp.userservice.entity.User;
@@ -20,6 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
+	
+	private final List<byte[]> memoryHog = new ArrayList<>();
 
 	private final UserService service;
 	String podName = System.getenv("HOSTNAME");
@@ -34,7 +40,7 @@ public class UserController {
 		return service.createUser(user);
 	}
 	
-	@GetMapping("/{id}")
+	/*@GetMapping("/{id}")
 	public ResponseEntity<CommonResponseModel> getUserById(@PathVariable Long id) {
 		return service.getUserById(id)
 				.map(user -> ResponseEntity.ok(CommonResponseModel.builder().podName(podName).userDetail(user).build()))
@@ -50,5 +56,22 @@ public class UserController {
 	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 		service.deleteUser(id);
 		return ResponseEntity.noContent().build();
-	}
+	}*/
+	
+	@GetMapping("/consume-memory")
+    public String consumeMemory(@RequestParam(defaultValue = "100") int mb) {
+        // Allocate memory in chunks of 1MB (1024 * 1024 bytes)
+        int count = mb;
+        for (int i = 0; i < count; i++) {
+            memoryHog.add(new byte[1024 * 1024]); // 1MB
+        }
+        return "Allocated approx " + count + "MB of memory";
+    }
+
+    @GetMapping("/clear-memory")
+    public String clearMemory() {
+        memoryHog.clear();
+        System.gc(); // Request GC
+        return "Memory cleared and GC requested.";
+    }
 }
