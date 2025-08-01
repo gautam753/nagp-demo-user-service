@@ -40,7 +40,7 @@ public class UserController {
 		return service.createUser(user);
 	}
 	
-	/*@GetMapping("/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<CommonResponseModel> getUserById(@PathVariable Long id) {
 		return service.getUserById(id)
 				.map(user -> ResponseEntity.ok(CommonResponseModel.builder().podName(podName).userDetail(user).build()))
@@ -56,7 +56,7 @@ public class UserController {
 	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 		service.deleteUser(id);
 		return ResponseEntity.noContent().build();
-	}*/
+	}
 	
 	@GetMapping("/consume-memory")
     public String consumeMemory(@RequestParam(defaultValue = "100") int mb) {
@@ -65,13 +65,13 @@ public class UserController {
         for (int i = 0; i < count; i++) {
             memoryHog.add(new byte[1024 * 1024]); // 1MB
         }
-        return "Allocated approx " + count + "MB of memory";
+        return "Allocated approx " + count + "MB of memory to pod "+ podName;
     }
 
     @GetMapping("/clear-memory")
     public String clearMemory() {
         memoryHog.clear();
         System.gc(); // Request GC
-        return "Memory cleared and GC requested.";
+        return "Memory cleared and GC requested from pod "+ podName;
     }
 }
